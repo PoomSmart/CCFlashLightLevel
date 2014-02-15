@@ -1,0 +1,8 @@
+Package: org.thebigboss.ccflashlightlevel
+Name: CamVolNormal
+Depends: mobilesubstrate, firmware (>= 7.0), gsc.camera-flash
+Version: 1.0
+Architecture: iphoneos-arm
+Description: adjustable torch level of Control Center Torch button.
+Author: PoomSmart
+Section: Tweaks
