@@ -3,6 +3,6 @@ Name: CamVolNormal
 Depends: mobilesubstrate, firmware (>= 7.0), gsc.camera-flash
 Version: 1.0
 Architecture: iphoneos-arm
-Description: adjustable torch level of Control Center Torch button.
+Description: adjustable torch level using Control Center's torch button.
 Author: PoomSmart
 Section: Tweaks

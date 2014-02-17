@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>title</key>
+    <string>CCFlashLightLevel</string>
+    <key>entry</key>
+    <dict>
+      <key>cell</key>
+      <string>PSLinkCell</string>
+      <key>icon</key>
+      <string>CCFLL.png</string>
+      <key>label</key>
+      <string>CCFlashLightLevel</string>
+    </dict>
+    <key>items</key>
+    <array>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Hold time</string>
+        <key>footerText</key>
+        <string>Adjust the delay before the slider shows after you tap and hold the torch button.</string>
+      </dict>
+      <dict>
+			<key>PostNotification</key>
+			<string>com.PS.CCFlashLightLevel.prefs</string>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>1.2</real>
+			<key>defaults</key>
+			<string>com.PS.CCFlashLightLevel</string>
+			<key>key</key>
+			<string>showTime</string>
+			<key>max</key>
+			<real>5.0</real>
+			<key>min</key>
+			<real>0.0</real>
+			<key>showValue</key>
+			<true/>
+		</dict>
+		<dict>
+		<key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Slider timeout</string>
+        <key>footerText</key>
+        <string>Adjust how much time you want slider to be shown before hiding itself.</string>
+      </dict>
+      <dict>
+			<key>PostNotification</key>
+			<string>com.PS.CCFlashLightLevel.prefs</string>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>3.0</real>
+			<key>defaults</key>
+			<string>com.PS.CCFlashLightLevel</string>
+			<key>key</key>
+			<string>hideTime</string>
+			<key>max</key>
+			<real>10.0</real>
+			<key>min</key>
+			<real>2.0</real>
+			<key>showValue</key>
+			<true/>
+		</dict>
+		<dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>footerText</key>
+        <string>This tweak allows you to adjust torch level directly in Control Center using a slider on the torch button, tap and hold that button to activate the slider.
+
+© 2013 - 2014 Thuchapol Unprasert
+(@PoomSmart)</string>
+      </dict>
+    </array>
+  </dict>
+</plist>
