@@ -30,6 +30,7 @@
 
 @interface SBCCQuickLaunchSectionController
 - (NSString *)_bundleIDForButton:(SBControlCenterButton *)button;
+- (void)CCFLLInit;
 @end
 
 static UISlider *slider = nil;
@@ -51,22 +52,34 @@ static void invalidate()
 	}
 }
 
-%hook SBCCQuickLaunchSectionController
+%hook CCTogglesAgent
 
-- (void)viewDidLoad
+- (void)_setQuickLaunchSection:(SBCCQuickLaunchSectionController *)controller
 {
 	%orig;
+	[controller CCFLLInit];
+}
+
+%end
+
+%hook SBCCQuickLaunchSectionController
+
+%new
+- (void)CCFLLInit
+{
 	SBControlCenterButton *torchButton = MSHookIvar<SBControlCenterButton *>(self, "_torchButton");
-	torchButton.identifier = @"CCFlashLightLevel.torchButton";
+	torchButton.identifier = @"com.apple.controlcenter.quicklaunch.torch";
 	AVFlashlight *flashlight = MSHookIvar<AVFlashlight *>(self, "_flashlight");
 	[torchButton addTarget:self action:@selector(FLbuttonTouchDown) forControlEvents:UIControlEventTouchDown];
 	[torchButton addTarget:self action:@selector(FLbuttonCancel) forControlEvents:UIControlEventTouchUpOutside|UIControlEventTouchCancel|UIControlEventTouchDragExit];
+	[slider release];
 	slider = [[UISlider alloc] init];
 	[slider addTarget:self action:@selector(sliderDidChange:) forControlEvents:UIControlEventValueChanged];
 	[slider addTarget:self action:@selector(touchSlider) forControlEvents:UIControlEventTouchDown];
 	[slider addTarget:self action:@selector(releaseSlider) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside|UIControlEventTouchCancel|UIControlEventTouchDragExit];
 	slider.value = flashlight.flashlightLevel;
 	slider.frame = CGRectMake(0, torchButton.frame.size.width/2-5, torchButton.frame.size.width, 12);
+	[placeHolder release];
 	placeHolder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
 	placeHolder.backgroundColor = [UIColor clearColor];
 	placeHolder.userInteractionEnabled = NO;
@@ -74,6 +87,12 @@ static void invalidate()
 	[torchButton addSubview:placeHolder];
 	slider.alpha = 0;
 	slider.hidden = YES;
+}
+
+- (void)viewDidLoad
+{
+	%orig;
+	[self CCFLLInit];
 }
 
 - (void)dealloc
@@ -85,6 +104,11 @@ static void invalidate()
 	[placeHolder release];
 	placeHolder = nil;
 	invalidate();
+	%orig;
+}
+
+- (void)_enableTorch:(BOOL)torch
+{
 	%orig;
 }
 
@@ -122,7 +146,7 @@ static void invalidate()
 
 - (void)buttonTapped:(SBControlCenterButton *)button
 {
-	if ([button.identifier isEqualToString:@"CCFlashLightLevel.torchButton"]) {
+	if ([button.identifier isEqualToString:@"com.apple.controlcenter.quicklaunch.torch"]) {
 		invalidate();
 		if (usingSlider || !slider.hidden) {
 			[button _updateSelected:slider.value != 0.0 highlighted:NO];
