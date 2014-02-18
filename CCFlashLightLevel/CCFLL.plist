@@ -68,6 +68,32 @@
 			<true/>
 		</dict>
 		<dict>
+		<key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Default maximum light level</string>
+        <key>footerText</key>
+        <string>Set the default light level when you turn on the torch using button.</string>
+      </dict>
+      <dict>
+			<key>PostNotification</key>
+			<string>com.PS.CCFlashLightLevel.prefs</string>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>1.0</real>
+			<key>defaults</key>
+			<string>com.PS.CCFlashLightLevel</string>
+			<key>key</key>
+			<string>level</string>
+			<key>max</key>
+			<real>1.0</real>
+			<key>min</key>
+			<real>0.0</real>
+			<key>showValue</key>
+			<true/>
+		</dict>
+		<dict>
         <key>cell</key>
         <string>PSGroupCell</string>
         <key>footerText</key>
