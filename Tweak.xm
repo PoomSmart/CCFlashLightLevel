@@ -81,6 +81,8 @@ static void willHideSlider(id self)
 static float readLightLevel()
 {
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:PLIST_PATH];
+	if (![[dict objectForKey:@"enableDefault"] boolValue])
+		return slider.value != 0.0 ? slider.value : 1;
 	float level = [dict objectForKey:@"level"] ? [[dict objectForKey:@"level"] floatValue] : 1;
 	return level;
 }
@@ -115,6 +117,7 @@ static float readLightLevel()
 %new
 - (void)CCFLLInit:(SBControlCenterButton *)button
 {
+	button.identifier = TorchButtonIdent;
 	[button addTarget:self action:@selector(FLbuttonTouchDown) forControlEvents:UIControlEventTouchDown];
 	[button addTarget:self action:@selector(FLbuttonCancel) forControlEvents:UIControlEventTouchUpOutside|UIControlEventTouchCancel|UIControlEventTouchDragExit];
 	[slider release];

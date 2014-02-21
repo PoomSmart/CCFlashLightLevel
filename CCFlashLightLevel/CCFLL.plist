@@ -73,11 +73,22 @@
         <key>label</key>
         <string>Default maximum light level</string>
         <key>footerText</key>
-        <string>Set the default light level when you turn on the torch using button.</string>
+        <string>Set the default light level when you turn on the torch using button if Remember Slider Value option is disabled.
+If Remember Slider Value is enabled, a slider value of light level setting will be applied in the next power on of the torch.</string>
+      </dict>
+       <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>default</key>
+        <false/>
+        <key>defaults</key>
+        <string>com.PS.CCFlashLightLevel</string>
+        <key>key</key>
+        <string>enableDefault</string>
+        <key>label</key>
+        <string>Remember Slider Value</string>
       </dict>
       <dict>
-			<key>PostNotification</key>
-			<string>com.PS.CCFlashLightLevel.prefs</string>
 			<key>cell</key>
 			<string>PSSliderCell</string>
 			<key>default</key>
