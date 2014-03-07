@@ -117,7 +117,8 @@ static float readLightLevel()
 %new
 - (void)CCFLLInit:(SBControlCenterButton *)button
 {
-	button.identifier = TorchButtonIdent;
+	if ([button isKindOfClass:objc_getClass("SBControlCenterButton")])
+		button.identifier = TorchButtonIdent;
 	[button addTarget:self action:@selector(FLbuttonTouchDown) forControlEvents:UIControlEventTouchDown];
 	[button addTarget:self action:@selector(FLbuttonCancel) forControlEvents:UIControlEventTouchUpOutside|UIControlEventTouchCancel|UIControlEventTouchDragExit];
 	[slider release];
