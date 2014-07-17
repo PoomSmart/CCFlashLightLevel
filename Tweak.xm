@@ -112,6 +112,20 @@ static float readLightLevel()
 
 %end
 
+%hook SBUIControlCenterButton
+
+- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)events
+{
+	if (action == @selector(_pressAction)) {
+		if ([self isKindOfClass:objc_getClass("CCTControlCenterButton")]) {
+			return;
+		}
+	}
+	%orig;
+}
+
+%end
+
 %hook SBCCQuickLaunchSectionController
 
 %new
@@ -119,6 +133,9 @@ static float readLightLevel()
 {
 	if ([button isKindOfClass:objc_getClass("SBControlCenterButton")])
 		button.identifier = TorchButtonIdent;
+	for (UIGestureRecognizer *recognizer in button.gestureRecognizers) {
+		[button removeGestureRecognizer:recognizer];
+	}
 	[button addTarget:self action:@selector(FLbuttonTouchDown) forControlEvents:UIControlEventTouchDown];
 	[button addTarget:self action:@selector(FLbuttonCancel) forControlEvents:UIControlEventTouchUpOutside|UIControlEventTouchCancel|UIControlEventTouchDragExit];
 	[slider release];
