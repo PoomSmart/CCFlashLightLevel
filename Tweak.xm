@@ -7,7 +7,7 @@ CFStringRef const PreferencesNotification = CFSTR("com.PS.CCFlashLightLevel.pref
 NSString *const defaultTorchButtonIdentifier = @"flashlight";
 NSString *const ccTogglesTorchButtonIdentifier = @"com.apple.controlcenter.quicklaunch.torch";
 NSString *const a3tweaksTorchButtonIdentifier = @"com.a3tweaks.switch.flashlight";
-float const lowestTorchLevel = 0.01f;
+CGFloat const lowestTorchLevel = 0.01f;
 
 @interface UIView (Private)
 - (UIViewController *)mpAncestorViewController;
@@ -116,12 +116,16 @@ static CGFloat readLightLevel()
 	return level;
 }
 
-static void writeLightLevel(float value)
+static void writeLightLevel(CGFloat value)
 {
 	if (saveValueOnGesture) {
 		NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 		[dictionary addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH]];
+		#if CGFLOAT_IS_DOUBLE
+		dictionary[@"level"] = @((double)value);
+		#else
 		dictionary[@"level"] = @(value);
+		#endif
 		[dictionary writeToFile:PLIST_PATH atomically:YES];
 		CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), PreferencesNotification, NULL, NULL, YES);
 	}
@@ -160,8 +164,6 @@ static void calculateDirectionAndSetFlashlightLevel(NSSet *touches, UIViewContro
 	if (!hookAVFlashlight || value == 0.0f)
 		return %orig;
 	CGFloat val = readLightLevel();
-	if (val == 1.0f)
-		val = AVCaptureMaxAvailableTorchLevel;
 	return %orig(val, error);
 }
 
@@ -339,7 +341,11 @@ static void prefs()
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:PLIST_PATH];
 	enableDefault = [dict[@"enableDefault"] boolValue];
 	saveValueOnGesture = [dict[@"saveValueOnGesture"] boolValue];
+	#if CGFLOAT_IS_DOUBLE
+	level = dict[@"level"] ? [dict[@"level"] doubleValue] : 1.0f;
+	#else
 	level = dict[@"level"] ? [dict[@"level"] floatValue] : 1.0f;
+	#endif
 }
 
 static void reloadSettings(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo)
